@@ -16,8 +16,9 @@ jobs:
       - name: Deploy PR Staging
         uses: reggionick/s3-deploy@v3
         with:
-          folder: CloudResume
+          folder: ResumeWebpage
           bucket: '${{ secrets.S3_STAGING_BUCKET }}'
           bucket-region: '${{ secrets.S3_BUCKET_REGION }}'
           delete-removed: true
           no-cache: true
+          private: true
