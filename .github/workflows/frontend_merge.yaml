@@ -22,3 +22,9 @@ jobs:
           delete-removed: true
           no-cache: true
           private: true
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
+          PATHS: "/*"
+          AWS_REGION: "us-east-1"
