@@ -261,4 +261,10 @@ page[size="A4"] {
   padding-left: 0.5cm;
   list-style-type: disc;
 }
+
+.bottomRight {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}
 /*End Layout*/
