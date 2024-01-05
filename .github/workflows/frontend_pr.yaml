@@ -10,6 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: aws deploy
-        run: AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} aws s3 cp ResumeWebpage/* s3://brianfukanoresumestaging/
+        run: AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} aws s3 cp ResumeWebpage/* s3://brianfukanostagingresume/
       - name: aws verify
         run: if curl 'http://brianfukanostagingresume.s3-website.us-east-2.amazonaws.com' 2>&1>/dev/null; then exit 0; else exit 1; fi
