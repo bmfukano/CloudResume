@@ -38,7 +38,7 @@ class TestSampleLambda(TestCase):
 
         # Establish the "GLOBAL" environment for use in tests.
         mocked_dynamodb_resource = resource("dynamodb", region_name="us-east-2")
-        mocked_dynamodb_resource = {"resource": resource('dynamodb'),
+        mocked_dynamodb_resource = {"resource": resource('dynamodb', region_name="us-east-2"),
                                     "table_name": self.test_ddb_table_name}
         self.mocked_dynamodb_class = LambdaDynamoDBClass(mocked_dynamodb_resource)
 
