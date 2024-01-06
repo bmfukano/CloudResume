@@ -4,7 +4,7 @@ Increments visitor count by one and responds to HTTP request
 from os import environ
 from boto3 import resource
 
-_LAMBDA_DYNAMODB_RESOURCE = {"resource": resource('dynamodb'),
+_LAMBDA_DYNAMODB_RESOURCE = {"resource": resource('dynamodb', region_name="us-east-1"),
                              "table_name": environ.get("DYNAMODB_TABLE_NAME", "NONE")}
 
 

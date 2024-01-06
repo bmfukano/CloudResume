@@ -28,7 +28,7 @@ class TestSampleLambda(TestCase):
         os.environ["DYNAMODB_TABLE_NAME"] = self.test_ddb_table_name
 
         # Set up the services: construct a (mocked!) DynamoDB table
-        dynamodb = resource('dynamodb', region_name="us-east-2")
+        dynamodb = resource('dynamodb', region_name="us-east-1")
         dynamodb.create_table(
             TableName=self.test_ddb_table_name,
             KeySchema=[{"AttributeName": "visits", "KeyType": "HASH"}],
@@ -37,8 +37,8 @@ class TestSampleLambda(TestCase):
             )
 
         # Establish the "GLOBAL" environment for use in tests.
-        mocked_dynamodb_resource = resource("dynamodb", region_name="us-east-2")
-        mocked_dynamodb_resource = {"resource": resource('dynamodb', region_name="us-east-2"),
+        mocked_dynamodb_resource = resource("dynamodb", region_name="us-east-1")
+        mocked_dynamodb_resource = {"resource": resource('dynamodb', region_name="us-east-1"),
                                     "table_name": self.test_ddb_table_name}
         self.mocked_dynamodb_class = LambdaDynamoDBClass(mocked_dynamodb_resource)
 
@@ -81,7 +81,7 @@ class TestSampleLambda(TestCase):
         self.assertIn("Not Found", test_return_value["body"])
 
     def tearDown(self) -> None:
-        dynamodb_resource = client("dynamodb", region_name="us-east-2")
+        dynamodb_resource = client("dynamodb", region_name="us-east-1")
         dynamodb_resource.delete_table(TableName=self.test_ddb_table_name)
 
 # End of unit test code
