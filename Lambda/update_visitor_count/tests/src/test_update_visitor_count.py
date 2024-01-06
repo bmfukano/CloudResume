@@ -11,6 +11,7 @@ sys.path.append('./src')
 from src.update_visitor_count import LambdaDynamoDBClass   # pylint: disable=wrong-import-position
 from src.update_visitor_count import increment_visitor_count  # pylint: disable=wrong-import-position
 
+os.environ['AWS_DEFAULT_REGION'] = "us-east-2"
 
 @moto.mock_dynamodb
 class TestSampleLambda(TestCase):
