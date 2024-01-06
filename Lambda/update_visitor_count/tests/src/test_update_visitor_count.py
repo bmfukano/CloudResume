@@ -11,8 +11,6 @@ sys.path.append('./src')
 from src.update_visitor_count import LambdaDynamoDBClass   # pylint: disable=wrong-import-position
 from src.update_visitor_count import increment_visitor_count  # pylint: disable=wrong-import-position
 
-os.environ['AWS_DEFAULT_REGION'] = "us-east-2"
-
 @moto.mock_dynamodb
 class TestSampleLambda(TestCase):
     """
@@ -30,7 +28,7 @@ class TestSampleLambda(TestCase):
         os.environ["DYNAMODB_TABLE_NAME"] = self.test_ddb_table_name
 
         # Set up the services: construct a (mocked!) DynamoDB table
-        dynamodb = resource('dynamodb')
+        dynamodb = resource('dynamodb', region_name="us-east-2")
         dynamodb.create_table(
             TableName=self.test_ddb_table_name,
             KeySchema=[{"AttributeName": "visits", "KeyType": "HASH"}],
@@ -83,7 +81,7 @@ class TestSampleLambda(TestCase):
         self.assertIn("Not Found", test_return_value["body"])
 
     def tearDown(self) -> None:
-        dynamodb_resource = client("dynamodb")
+        dynamodb_resource = client("dynamodb", region_name="us-east-2")
         dynamodb_resource.delete_table(TableName=self.test_ddb_table_name)
 
 # End of unit test code
