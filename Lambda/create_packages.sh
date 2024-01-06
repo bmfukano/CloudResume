@@ -8,3 +8,4 @@ for d in */; do
     rm -rf package
     popd
 done
+
