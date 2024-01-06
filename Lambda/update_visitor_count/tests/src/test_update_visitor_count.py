@@ -11,6 +11,7 @@ sys.path.append('./src')
 from src.update_visitor_count import LambdaDynamoDBClass   # pylint: disable=wrong-import-position
 from src.update_visitor_count import increment_visitor_count  # pylint: disable=wrong-import-position
 
+
 @moto.mock_dynamodb
 class TestSampleLambda(TestCase):
     """
@@ -30,7 +31,7 @@ class TestSampleLambda(TestCase):
         # Set up the services: construct a (mocked!) DynamoDB table
         dynamodb = resource('dynamodb')
         dynamodb.create_table(
-            TableName = self.test_ddb_table_name,
+            TableName=self.test_ddb_table_name,
             KeySchema=[{"AttributeName": "visits", "KeyType": "HASH"}],
             AttributeDefinitions=[{"AttributeName": "visits", "AttributeType": "S"}],
             BillingMode='PAY_PER_REQUEST'
@@ -38,10 +39,9 @@ class TestSampleLambda(TestCase):
 
         # Establish the "GLOBAL" environment for use in tests.
         mocked_dynamodb_resource = resource("dynamodb")
-        mocked_dynamodb_resource = { "resource" : resource('dynamodb'),
-                                     "table_name" : self.test_ddb_table_name  }
+        mocked_dynamodb_resource = {"resource": resource('dynamodb'),
+                                    "table_name": self.test_ddb_table_name}
         self.mocked_dynamodb_class = LambdaDynamoDBClass(mocked_dynamodb_resource)
-
 
     def test_create_letter_in_s3(self) -> None:
         """
@@ -57,25 +57,24 @@ class TestSampleLambda(TestCase):
 
         # Run DynamoDB to S3 file function
         test_return_value = increment_visitor_count(
-                        dynamo_db = self.mocked_dynamodb_class
+                        dynamo_db=self.mocked_dynamodb_class
                         )
 
         # Test
         self.assertEqual(test_return_value["statusCode"], 200)
-        self.assertEqual(test_return_value["body"],1)
-
+        self.assertEqual(test_return_value["body"], 1)
 
     def test_create_letter_in_s3_doc_type_notfound_404(self) -> None:
         """
         Verify given a document type not present in the data table, a 404 error is returned.
         """
         # Post test items to a mocked database
-        self.mocked_dynamodb_class.table.put_item(Item={"visits":"bad_item",
-                                                        "data":"bad_data"})
+        self.mocked_dynamodb_class.table.put_item(Item={"visits": "bad_item",
+                                                        "data": "bad_data"})
 
         # Run DynamoDB to S3 file function
         test_return_value = increment_visitor_count(
-                            dynamo_db = self.mocked_dynamodb_class
+                            dynamo_db=self.mocked_dynamodb_class
                             )
 
         # Test
@@ -84,6 +83,6 @@ class TestSampleLambda(TestCase):
 
     def tearDown(self) -> None:
         dynamodb_resource = client("dynamodb")
-        dynamodb_resource.delete_table(TableName = self.test_ddb_table_name )
+        dynamodb_resource.delete_table(TableName=self.test_ddb_table_name)
 
 # End of unit test code
