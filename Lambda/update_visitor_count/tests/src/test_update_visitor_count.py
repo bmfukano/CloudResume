@@ -1,13 +1,15 @@
+"""
+Unit Test for Update Visitor Count
+"""
 import sys
 import os
 from unittest import TestCase
-from unittest.mock import MagicMock, patch
 from boto3 import resource, client
 import moto
 
 sys.path.append('./src')
 from src.update_visitor_count import LambdaDynamoDBClass   # pylint: disable=wrong-import-position
-from src.update_visitor_count import lambda_handler, increment_visitor_count  # pylint: disable=wrong-import-position
+from src.update_visitor_count import increment_visitor_count  # pylint: disable=wrong-import-position
 
 @moto.mock_dynamodb
 class TestSampleLambda(TestCase):
@@ -27,7 +29,7 @@ class TestSampleLambda(TestCase):
 
         # Set up the services: construct a (mocked!) DynamoDB table
         dynamodb = resource('dynamodb')
-        response = dynamodb.create_table(
+        dynamodb.create_table(
             TableName = self.test_ddb_table_name,
             KeySchema=[{"AttributeName": "visits", "KeyType": "HASH"}],
             AttributeDefinitions=[{"AttributeName": "visits", "AttributeType": "S"}],
@@ -47,7 +49,8 @@ class TestSampleLambda(TestCase):
         """
 
         # Post test items to a mocked database
-        self.mocked_dynamodb_class.table.put_item(Item={"visits": "resume_visits", "visit_count": 0})
+        self.mocked_dynamodb_class.table.put_item(Item={"visits": "resume_visits",
+                                                        "visit_count": 0})
 
         visits = self.mocked_dynamodb_class.table.get_item(Key={'visits': 'resume_visits'})
         print(visits)
